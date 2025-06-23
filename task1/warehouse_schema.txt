@@ -1,0 +1,83 @@
+# Simplified Data Warehouse Schema
+
+## 1. Dimension Table: `dim_user`
+
+| Field Name       | Data Type   | Description               |
+| ---------------- | ----------- | ------------------------- |
+| user\_id         | STRING (PK) | Unique user ID            |
+| state            | STRING      | User's state              |
+| role             | STRING      | Role of the user          |
+| sign\_up\_source | STRING      | Sign-up method            |
+| created\_date    | TIMESTAMP   | Date the user was created |
+| last\_login      | TIMESTAMP   | Last login date           |
+
+---
+
+## 2. Dimension Table: `dim_brand`
+
+| Field Name     | Data Type   | Description               |
+| -------------- | ----------- | ------------------------- |
+| brand\_id      | STRING (PK) | Unique brand ID           |
+| barcode        | STRING      | Barcode of the item       |
+| brand\_code    | STRING      | Brand code                |
+| category       | STRING      | Product category          |
+| category\_code | STRING      | Category code             |
+| brand\_name    | STRING      | Brand name                |
+| top\_brand     | BOOLEAN     | Whether it is a top brand |
+| cpg\_id        | STRING      | CPG reference ID          |
+
+---
+
+## 3. Fact Table: `fact_receipt`
+
+| Field Name             | Data Type   | Description                 |
+| ---------------------- | ----------- | --------------------------- |
+| receipt\_id            | STRING (PK) | Unique receipt ID           |
+| user\_id               | STRING (FK) | Foreign key to `dim_user`   |
+| bonus\_points\_earned  | INTEGER     | Bonus points earned         |
+| bonus\_points\_reason  | STRING      | Reason for bonus            |
+| purchase\_date         | DATE        | Date of purchase            |
+| points\_earned         | FLOAT       | Total points earned         |
+| total\_spent           | FLOAT       | Total amount spent          |
+| purchased\_item\_count | INTEGER     | Number of items             |
+| receipt\_status        | STRING      | Status of the receipt       |
+| create\_date           | TIMESTAMP   | Receipt creation timestamp  |
+| modify\_date           | TIMESTAMP   | Last modification timestamp |
+| points\_awarded\_date  | TIMESTAMP   | When points were awarded    |
+
+---
+
+## 4. Fact Table: `fact_receipt_item`
+
+| Field Name                   | Data Type   | Description                              |
+| ---------------------------- | ----------- | ---------------------------------------- |
+| receipt\_item\_id            | STRING (PK) | Unique item line ID                      |
+| receipt\_id                  | STRING (FK) | Foreign key to `fact_receipt`            |
+| barcode                      | STRING      | Joinable with `dim_brand.barcode`        |
+| description                  | STRING      | Product description                      |
+| item\_price                  | FLOAT       | Original item price                      |
+| final\_price                 | FLOAT       | Final item price after discounts         |
+| quantity\_purchased          | INTEGER     | Quantity purchased                       |
+| user\_flagged\_new\_item     | BOOLEAN     | Flag indicating new item flagged by user |
+| user\_flagged\_price         | FLOAT       | Price flagged by user                    |
+| user\_flagged\_quantity      | INTEGER     | Quantity flagged by user                 |
+| needs\_fetch\_review         | BOOLEAN     | Flag for manual review                   |
+| points\_not\_awarded\_reason | STRING      | Reason why points weren’t awarded        |
+| rewards\_group               | STRING      | Product group name                       |
+
+---
+
+## 5. Join Relationships
+
+* `fact_receipt.user_id` ➔ `dim_user.user_id`
+* `fact_receipt_item.receipt_id` ➔ `fact_receipt.receipt_id`
+* `fact_receipt_item.barcode` ➔ `dim_brand.barcode`
+
+---
+
+## Optional Enhancements
+
+* Add a `dim_date` table for date fields (e.g., purchase\_date, create\_date)
+* Add surrogate keys for better warehouse indexing and join performance
+* Create summary views for user activity, brand analysis, and reward tracking
+

@@ -1,0 +1,66 @@
++--------------------+
+|     dim_user       |
++--------------------+
+| user_id (PK)       |
+| state              |
+| role               |
+| sign_up_source     |
+| created_date       |
+| last_login         |
++--------------------+
+          |
+          |  (FK)
+          |
+          v
++--------------------+
+|   fact_receipt     |
++--------------------+
+| receipt_id (PK)    |
+| user_id (FK)       |
+| bonus_points_earned|
+| bonus_points_reason|
+| purchase_date      |
+| points_earned      |
+| total_spent        |
+| purchased_item_count|
+| receipt_status     |
+| create_date        |
+| modify_date        |
+| points_awarded_date|
++--------------------+
+          |
+          |  (FK)
+          |
+          v
++---------------------------+
+|   fact_receipt_item       |
++---------------------------+
+| receipt_item_id (PK)      |
+| receipt_id (FK)           |
+| barcode                   |
+| description               |
+| item_price                |
+| final_price               |
+| quantity_purchased        |
+| user_flagged_new_item     |
+| user_flagged_price        |
+| user_flagged_quantity     |
+| needs_fetch_review        |
+| points_not_awarded_reason |
+| rewards_group             |
++---------------------------+
+          |
+          |  (barcode join)
+          v
++--------------------+
+|     dim_brand      |
++--------------------+
+| brand_id (PK)      |
+| barcode            |
+| brand_code         |
+| category           |
+| category_code      |
+| brand_name         |
+| top_brand          |
+| cpg_id             |
++--------------------+
