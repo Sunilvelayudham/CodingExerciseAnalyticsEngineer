@@ -1,1 +1,34 @@
+Subject: Initial Findings from Receipt & Brand Data Review
 
+Hi [StackHolder Name],
+
+I’ve completed a preliminary review of the receipt, user, and brand datasets we plan to use for analytics and reporting. I wanted to share a quick summary of what I found, what questions I have, and what we’ll need to move forward effectively.
+
+Key Findings:
+- Many receipts are missing key fields like purchase date, total amount spent, and item details – this could limit our ability to analyze customer behavior or spending patterns accurately.
+- Over 4,000 receipt items are missing barcodes, and more than 7,000 barcodes don’t match our brand list, which weakens the connection between what users are buying and the brand insights we can generate.
+- There are duplicate user records and missing values for user state and signup source, making it harder to segment users or attribute activity properly.
+
+Questions I Have:
+- Are certain fields like bonusPointsEarned or purchaseDate optional, or are these missing due to ingestion issues?
+- Should “ITEM NOT FOUND” entries be considered valid data, or are these failed recognitions that we should ignore?
+- Can we assume that all barcodes in the receipt items should match with the brand catalog, or are there edge cases?
+
+What We Need to Resolve This:
+- Clarity on which fields are critical for the business KPIs we want to track.
+- A mapping or update process for new/unrecognized barcodes so we can enrich the data over time.
+- Agreement on how to treat incomplete  records – exclude them, flag them, or estimate missing values?
+
+To Optimize Data Assets:
+- A clear definition of the most important metrics (e.g., active users, top brands, average spend).
+- Understanding of what business questions we're trying to answer long-term.
+- If possible, better documentation  to align technical modeling with product expectations.
+
+Looking Ahead – Performance & Scaling:
+- As more receipts and items are added, we’ll need to index key columns (like user_id, barcode, purchase_date) for faster querying.
+- For large-scale reporting, we should consider building summary tables (e.g., monthly brand stats, user cohorts) to avoid scanning raw data frequently.
+- We'll also implement data quality monitoring in production to catch similar issues early.
+
+Happy to walk you through any part of this in more detail! I’ll be incorporating these learnings into our data model and will share updates in the repo.
+
+Best,
